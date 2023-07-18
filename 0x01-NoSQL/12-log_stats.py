@@ -15,7 +15,7 @@ post = db.nginx.count_documents({'method': 'POST'})
 put = db.nginx.count_documents({'method': 'PUT'})
 patch = db.nginx.count_documents({'method': 'PATCH'})
 delet = db.nginx.count_documents({'method': 'DELETE'})
-path = db.nginx.count_documents({'path': '/status'})
+path = db.nginx.count_documents({'method': 'GET', 'path': '/status'})
 
 
 print("{} logs".format(res))
