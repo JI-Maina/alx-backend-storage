@@ -18,8 +18,8 @@ class Cache():
     def store(self: redis.client.Redis, data: Any) -> str:
         """takes a data argument, sets it db and returns a storage key"""
 
-        key = str(uuid1())
+        key = str(uuid4())
 
-        self._redis.set(key, data)
+        self._redis.mset({key: data})
 
         return key
