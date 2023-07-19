@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-
+Defines a Cache class
 """
+import sys
 import redis
 from uuid import uuid4
-from typing import Any
+from typing import Any, Optional, Callable
 
 
 class Cache():
@@ -20,6 +21,22 @@ class Cache():
 
         key = str(uuid4())
 
-        self._redis.mset({key: data})
+        self._redis.set(key, data)
 
         return key
+
+    def get(self, key: str, fn: Optional[Callable] = None) -> Any:
+        """Retrieves converted value"""
+        if fn:
+            return fn(self._redis.get(key))
+
+        value = self._redis.get(key)
+        return value
+
+    def get_int(self: bytes) -> int:
+        """returns a number"""
+        return int.from_bytes(self, sys.byteorder)
+
+    def get_str(self: bytes) -> str:
+        """returns a string"""
+        return self.decode("utf-8")
