@@ -5,18 +5,18 @@ Defines a Cache class
 import sys
 import redis
 from uuid import uuid4
-from typing import Any, Optional, Callable
+from typing import Union, Optional, Callable, Any
 
 
 class Cache():
-    """
+    """Represents a Cache class
     """
 
     def __init__(self):
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-    def store(self: redis.client.Redis, data: Any) -> str:
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """takes a data argument, sets it db and returns a storage key"""
 
         key = str(uuid4())
