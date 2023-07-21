@@ -5,8 +5,24 @@ Defines a Cache class
 import sys
 import redis
 from uuid import uuid4
+from functools import wraps
 from typing import Union, Optional, Callable, Any
 
+
+def count_calls(fn: Callable) -> Callable:
+    """
+    """
+
+    key = fn.__qualname__
+
+    @wraps(fn)
+    def wrapper(self, *args, **kwargs):
+        """
+        """
+        self._redis.incr(key)
+        return fn(self, *args, **kwargs)
+
+    return wrapper
 
 class Cache():
     """Represents a Cache class
@@ -16,6 +32,7 @@ class Cache():
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """takes a data argument, sets it db and returns a storage key"""
 
