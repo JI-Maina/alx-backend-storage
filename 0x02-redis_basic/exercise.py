@@ -9,18 +9,18 @@ from functools import wraps
 from typing import Union, Optional, Callable, Any
 
 
-def count_calls(fn: Callable) -> Callable:
+def count_calls(method: Callable) -> Callable:
     """
     """
 
-    key = fn.__qualname__
+    key = method.__qualname__
 
-    @wraps(fn)
+    @wraps(method)
     def wrapper(self, *args, **kwargs):
         """
         """
         self._redis.incr(key)
-        return fn(self, *args, **kwargs)
+        return method(self, *args, **kwargs)
 
     return wrapper
 
